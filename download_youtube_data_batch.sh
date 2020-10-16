@@ -6,3 +6,4 @@ while read line; do
   output=$((python3 download_youtube_data.py $line) 2>&1)
   echo $output >> youtube_data/$line.json
 done < $filename
+

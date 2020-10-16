@@ -1,7 +1,6 @@
 from pathlib import Path
 import json
 
-
 paths = [str(x) for x in Path('./youtube_data').glob('**/*.json')]
 results = []
 for path in paths: 
