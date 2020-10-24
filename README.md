@@ -81,4 +81,3 @@ Now after executing the file we have the result stored in data_for_indexing.json
 #### Visualize data_for_indexing.json file using fx:
 
         fx data_for_indexing.json
-
