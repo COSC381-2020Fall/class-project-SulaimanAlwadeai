@@ -29,7 +29,7 @@ async def main():
     with open('google_search.json', 'w', encoding='utf-8') as f:
         json.dump(L, f, ensure_ascii=False, indent=4)
 
-def paging():
+async def paging():
     # function implementation
 
 if __name__ == '__main__':
