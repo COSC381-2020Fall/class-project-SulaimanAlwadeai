@@ -29,6 +29,9 @@ async def main():
     with open('google_search.json', 'w', encoding='utf-8') as f:
         json.dump(L, f, ensure_ascii=False, indent=4)
 
+async def paging():
+    # function implementation
+
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
