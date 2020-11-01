@@ -82,3 +82,6 @@ Now after executing the file we have the result stored in data_for_indexing.json
 
         fx data_for_indexing.json
 
+
+
+
