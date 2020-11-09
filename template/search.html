@@ -1,0 +1,236 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+body {
+  font-family: Arial;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: #0b7dda;
+}
+
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+ <style type="text/css">
+body {
+    background-color: #fff;
+    color: #24292e;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+
+.pager-nav {
+    margin: 16px 0;
+}
+.pager-nav span {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 1px;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #FFFFFF;
+    border: 1px solid #e1e1e1;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+.pager-nav span:hover,
+.pager-nav .pg-selected {
+    background-color: #f9f9f9;
+    border: 1px solid #CCCCCC;
+}
+    </style>
+
+<form class="example" method="post" action="/search">
+  <input type="text" placeholder="Search" name="ename">
+  <button type="submit">Search</button>
+</form><br><br>
+{% if r %}
+<table id="pager" class="wp-list-table widefat striped posts">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Employee Name</th>
+             <th>Employee Salary</th>
+             <th>Employee Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Info #1</th>
+            <th>Info #2</th>
+            <th>Info #1</th>
+            <th>Info #2</th>
+        </tr>
+       
+    </tbody>
+</table>
+
+<div id="pageNavPosition" class="pager-nav"></div>
+
+{% if r %}
+    <table class="table  text-center">
+      <thead class="table-dark">
+        <th>id</th>
+        <th>Employee Name</th>
+        <th>Employee Salary</th>
+        <th>Employee Address</th>
+      </thead>
+      {% for r1 in r %}
+      <tr class="text-black font-weight-bold" >
+        
+        <td>{{r1.0}}</td>
+        <td>{{r1.1}}</td>
+        <td>{{r1.2}}</td>
+        <td>{{r1.3}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+   {% else %}
+   <div class="alert alert-success" role="alert"">
+     <h4 class="font-weight-bold text-center text-dark">No Record  Are Available !!!</h4>
+  
+   </div>
+  {% endif %}  
+
+
+<script>
+/* eslint-env browser */
+/* global document */
+
+function Pager(tableName, itemsPerPage) {
+    'use strict';
+
+    this.tableName = tableName;
+    this.itemsPerPage = itemsPerPage;
+    this.currentPage = 1;
+    this.pages = 0;
+    this.inited = false;
+
+    this.showRecords = function (from, to) {
+        let rows = document.getElementById(tableName).rows;
+
+        // i starts from 1 to skip table header row
+        for (let i = 1; i < rows.length; i++) {
+            if (i < from || i > to) {
+                rows[i].style.display = 'none';
+            } else {
+                rows[i].style.display = '';
+            }
+        }
+    };
+
+    this.showPage = function (pageNumber) {
+        if (!this.inited) {
+            // Not initialized
+            return;
+        }
+
+        let oldPageAnchor = document.getElementById('pg' + this.currentPage);
+        oldPageAnchor.className = 'pg-normal';
+
+        this.currentPage = pageNumber;
+        let newPageAnchor = document.getElementById('pg' + this.currentPage);
+        newPageAnchor.className = 'pg-selected';
+
+        let from = (pageNumber - 1) * itemsPerPage + 1;
+        let to = from + itemsPerPage - 1;
+        this.showRecords(from, to);
+
+        let pgNext = document.querySelector('.pg-next'),
+            pgPrev = document.querySelector('.pg-prev');
+
+        if (this.currentPage == this.pages) {
+            pgNext.style.display = 'none';
+        } else {
+            pgNext.style.display = '';
+        }
+
+        if (this.currentPage === 1) {
+            pgPrev.style.display = 'none';
+        } else {
+            pgPrev.style.display = '';
+        }
+    };
+
+    this.prev = function () {
+        if (this.currentPage > 1) {
+            this.showPage(this.currentPage - 1);
+        }
+    };
+
+    this.next = function () {
+        if (this.currentPage < this.pages) {
+            this.showPage(this.currentPage + 1);
+        }
+    };
+
+    this.init = function () {
+        let rows = document.getElementById(tableName).rows;
+        let records = (rows.length - 1);
+
+        this.pages = Math.ceil(records / itemsPerPage);
+        this.inited = true;
+    };
+
+    this.showPageNav = function (pagerName, positionId) {
+        if (!this.inited) {
+            // Not initialized
+            return;
+        }
+
+        let element = document.getElementById(positionId),
+            pagerHtml = '<span onclick="' + pagerName + '.prev();" class="pg-normal pg-prev">&#171;</span>';
+
+        for (let page = 1; page <= this.pages; page++) {
+            pagerHtml += '<span id="pg' + page + '" class="pg-normal pg-next" onclick="' + pagerName + '.showPage(' + page + ');">' + page + '</span>';
+        }
+
+        pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">&#187;</span>';
+
+        element.innerHTML = pagerHtml;
+    };
+}
+
+
+
+//
+let pager = new Pager('pager', 3);
+
+pager.init();
+pager.showPageNav('pager', 'pageNavPosition');
+pager.showPage(1);
+</script>
+{% endblock %}
