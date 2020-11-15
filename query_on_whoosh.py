@@ -2,6 +2,7 @@ import sys
 from whoosh import scoring
 from whoosh.index import open_dir
 from whoosh.qparser import QueryParser
+from whoosh.lang.porter import stem
 
 def performQuery(queryTerm, pageNum, itemsPerPage):
     ix = open_dir("index_dir")
