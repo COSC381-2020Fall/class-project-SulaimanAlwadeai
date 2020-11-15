@@ -11,3 +11,4 @@ for path in paths:
 
 with open('data_for_indexing.json', 'w') as dump_file:
     json.dump(results, dump_file)
+ 
